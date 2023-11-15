@@ -27,7 +27,7 @@ class TwitchBot(commands.Bot):
         # Check for cheers (bits) and subscriptions
         if message.tags.get('is_subscriber'):
             await self.handle_subscription(message)
-        elif message.bits:
+        elif getattr(message, 'bits', 0):
             await self.handle_cheer(message)
 
         # Since we have commands and are overriding the default `event_message`
@@ -42,8 +42,15 @@ class TwitchBot(commands.Bot):
     async def handle_cheer(self, message):
         # Handle cheer events here
         username = message.author.name
-        bits = message.bits
-        print(f'{username} cheered {bits} bits!')
+
+        # Check for bits in the message tags
+        bits = message.tags.get('bits')
+    
+        if bits:
+            print(f'{username} cheered {bits} bits!')
+        else:
+            print(f'{username} sent a message without bits.')
+
 
     async def close(self):  # Add this method
         await super().close()
