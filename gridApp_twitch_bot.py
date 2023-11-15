@@ -65,7 +65,7 @@ class TwitchBot(commands.Bot):
 
         # Send a hello back!
         # Sending a reply back to the channel is easy... Below is an example.
-        await ctx.send(f'Hello {ctx.author.name}!')
+        await ctx.send(f'I\'m afraid I can\'t do that, {ctx.author.name}!')
 
     @commands.command()
     async def alive(self, alive: commands.Context):
