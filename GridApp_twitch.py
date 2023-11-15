@@ -62,6 +62,6 @@ class TwitchBot(commands.Bot):
         await alive.send('Bot is alive')
 
 
-twitch_bot = Bot()
+twitch_bot = TwitchBot()
 twitch_bot.run()
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
