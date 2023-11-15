@@ -1,6 +1,5 @@
 import os
 from twitchio.ext import commands
-from config import TWITCH_TOKEN
 
 class TwitchBot(commands.Bot):
 
