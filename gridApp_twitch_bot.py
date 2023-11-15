@@ -2,14 +2,12 @@ import os
 from twitchio.ext import commands
 
 class TwitchBot(commands.Bot):
-
-    def __init__(self, token, prefix, initial_channels):
-        # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
+    def __init__(self, token, prefix, initial_channels, loop=None):
+        # Initialise our Bot with our access token, prefix, and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
-        # initial_channels can also be a callable which returns a list of strings...
+        # initial_channels can also be a callable that returns a list of strings...
         super().__init__(token=token, prefix=prefix, initial_channels=initial_channels,
-                         capabilities=['chat_login', 'chat_messages', 'commands', 'cheer', 'subscription'])
-
+                         capabilities=['chat_login', 'chat_messages', 'commands', 'cheer', 'subscription'], loop=loop)
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -19,11 +17,11 @@ class TwitchBot(commands.Bot):
 
     async def event_message(self, message):
         # Messages with echo set to True are messages sent by the bot...
-        # For now we just want to ignore them...
+        # For now, we just want to ignore them...
         if message.echo:
             return
 
-        # Print the contents of our message to console...
+        # Print the contents of our message to the console...
         print(message.content)
 
         # Check for cheers (bits) and subscriptions
@@ -47,20 +45,21 @@ class TwitchBot(commands.Bot):
         bits = message.bits
         print(f'{username} cheered {bits} bits!')
 
+    async def close(self):  # Add this method
+        await super().close()
+        if self._connection:
+            await self._connection._close()
+
     @commands.command()
     async def hello(self, ctx: commands.Context):
-        # Here we have a command hello, we can invoke our command with our prefix and command name
+        # Here we have a command hello; we can invoke our command with our prefix and command name
         # e.g ?hello
         # We can also give our commands aliases (different names) to invoke with.
 
         # Send a hello back!
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
-    
+
     @commands.command()
     async def alive(self, alive: commands.Context):
         await alive.send('Bot is alive')
-
-twitch_bot = TwitchBot()
-twitch_bot.run()
-# bot.run() is blocking and will stop execution of any below code here until stopped or closed.
