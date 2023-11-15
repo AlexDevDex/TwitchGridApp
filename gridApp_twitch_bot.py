@@ -3,11 +3,11 @@ from twitchio.ext import commands
 
 class TwitchBot(commands.Bot):
 
-    def __init__(self, prefix, initial_channels):
+    def __init__(self, token, prefix, initial_channels):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_TOKEN, prefix=prefix, initial_channels=initial_channels,
+        super().__init__(token=token, prefix=prefix, initial_channels=initial_channels,
                          capabilities=['chat_login', 'chat_messages', 'commands', 'cheer', 'subscription'])
 
 

@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from gridApp_twitch_bot import TwitchBot
 from gridApp_discord_bot import DiscordBot
+from config import TWITCH_CHANNELS
 import asyncio
 
 # Load environment variables from .env file
@@ -16,7 +17,7 @@ twitch_prefix = '?'
 discord_prefix = '?'
 
 # Set initial Twitch channels
-twitch_channels = ['SunSh4dow']
+twitch_channels = TWITCH_CHANNELS
 
 # Create instances of Twitch and Discord bots
 twitch_bot = TwitchBot(token=twitch_token, prefix=twitch_prefix, initial_channels=twitch_channels)
