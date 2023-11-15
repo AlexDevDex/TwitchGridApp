@@ -28,13 +28,9 @@ async def handle_exit():
     exit_program = True
 
 # Run the Twitch bot
-async def run_twitch(loop):
-    # Create a new event loop for this task
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    # Create an instance of TwitchBot with the specified loop
-    twitch_bot = TwitchBot(token=twitch_token, prefix=twitch_prefix, initial_channels=twitch_channels, loop=loop)
+async def run_twitch():
+    # Create an instance of TwitchBot with the default event loop
+    twitch_bot = TwitchBot(token=twitch_token, prefix=twitch_prefix, initial_channels=twitch_channels)
 
     try:
         # Start the Twitch bot
@@ -44,13 +40,9 @@ async def run_twitch(loop):
         await twitch_bot.close()
 
 # Run the Discord bot
-async def run_discord(loop):
-    # Create a new event loop for this task
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    # Create an instance of DiscordBot with the specified loop
-    discord_bot = DiscordBot(token=discord_token, prefix=discord_prefix, loop=loop)
+async def run_discord():
+    # Create an instance of DiscordBot with the default event loop
+    discord_bot = DiscordBot(token=discord_token, prefix=discord_prefix)
 
     try:
         # Start the Discord bot
@@ -68,8 +60,8 @@ async def main():
     keyboard.add_hotkey('ctrl+c', lambda: loop.create_task(handle_exit()))
 
     try:
-        task_twitch = loop.create_task(run_twitch(loop))
-        task_discord = loop.create_task(run_discord(loop))
+        task_twitch = loop.create_task(run_twitch())
+        task_discord = loop.create_task(run_discord())
 
         await asyncio.gather(task_twitch, task_discord)
     except asyncio.CancelledError:
@@ -101,3 +93,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    print("Program should have stopped. Let's pray it did.")
